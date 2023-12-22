@@ -34,6 +34,18 @@ Device Error : {self.device_error}""")
         self.device_error = await self.client.get_node(f"{self.node_name}/DeviceError").get_value()
         self.device_error = [int(num) for num in bin(self.device_error)[2:].zfill(4)]
 
+    def data(self):
+        return {
+            "device_name": str(self.node_name)[7:],
+            "production_status": int(self.production_status),
+            "workorder_id": self.workorder_id,
+            "production_rate": self.production_rate,
+            "good_count": self.good_count,
+            "bad_count": self.bad_count,
+            "temperature": self.temperature,
+            "device_error": self.device_error
+        }
+
     async def emergency_stop_trigger(self):
         emergency_stop_method = self.client.get_node(f"{self.node_name}/EmergencyStop")
         await self.node_name.call_method(emergency_stop_method)
