@@ -1,6 +1,7 @@
 import asyncio
 from asyncua import Client, ua
 
+
 class Machine:
     def __init__(self, client, node_name):
         self.client = client
@@ -45,6 +46,9 @@ Device Error : {self.device_error}""")
             "temperature": self.temperature,
             "device_error": self.device_error
         }
+
+    def get_errors(self):
+        return self.device_error
 
     async def emergency_stop_trigger(self):
         emergency_stop_method = self.client.get_node(f"{self.node_name}/EmergencyStop")
