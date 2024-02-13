@@ -13,6 +13,7 @@ class Machine:
         self.bad_count = None
         self.temperature = None
         self.device_error = None
+        self.device_error_state = False
 
     def __str__(self):
         return (f"""
@@ -49,6 +50,12 @@ Device Error : {self.device_error}""")
 
     def get_errors(self):
         return self.device_error
+
+    def get_name(self):
+        return str(self.node_name)[7:]
+
+    async def reduce_production_rate(self, value=10):
+        await self.client.set_values([self.client.get_node(f"{self.node_name}/ProductionRate")], [ua.DataValue(ua.Variant(int(self.production_rate - value), ua.VariantType.Int32))])
 
     async def emergency_stop_trigger(self):
         emergency_stop_method = self.client.get_node(f"{self.node_name}/EmergencyStop")
