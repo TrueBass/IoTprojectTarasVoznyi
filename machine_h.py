@@ -57,6 +57,10 @@ Device Error : {self.device_error}""")
     async def reduce_production_rate(self, value=10):
         await self.client.set_values([self.client.get_node(f"{self.node_name}/ProductionRate")], [ua.DataValue(ua.Variant(int(self.production_rate - value), ua.VariantType.Int32))])
 
+    async def device_errors_reset(self):
+        errors_reset_method = self.client.get_node(f"{self.node_name}/ResetErrorStatus")
+        await self.node_name.call_method(errors_reset_method)
+
     async def emergency_stop_trigger(self):
         emergency_stop_method = self.client.get_node(f"{self.node_name}/EmergencyStop")
         await self.node_name.call_method(emergency_stop_method)
